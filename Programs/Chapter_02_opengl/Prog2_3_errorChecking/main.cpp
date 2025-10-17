@@ -51,12 +51,12 @@ GLuint createShaderProgram() {
 	GLint linked;
 
 	const char *vshaderSource =
-		"#version 430    \n"
+		"#version 460    \n"
 		"void main(void) \n"
 		"{ gl_Position = vec4(0.0, 0.0, 0.0, 1.0); }";
 
 	const char *fshaderSource =
-		"#version 430    \n"
+		"#version 460    \n"
 		"out vec4 color; \n"
 		"void main(void) \n"
 		"{ color = vec4(0.0, 0.0, 1.0, 1.0); }";
@@ -67,6 +67,11 @@ GLuint createShaderProgram() {
 
 	glShaderSource(vShader, 1, &vshaderSource, NULL);
 	glShaderSource(fShader, 1, &fshaderSource, NULL);
+
+	if (vShader == 0 || fShader == 0) {
+		std::cout << "Error creating shaders" << std::endl;
+		return 0;
+	}
 
 	// catch errors while compiling shaders
 
@@ -99,6 +104,11 @@ GLuint createShaderProgram() {
 		printProgramLog(vfprogram);
 	}
 
+	// 清理着色器对象
+	glDeleteShader(vShader);
+	glDeleteShader(fShader);
+
+
 	return vfprogram;
 }
 
@@ -117,10 +127,27 @@ void display(GLFWwindow* window, double currentTime) {
 int main(void) {
 	if (!glfwInit()) { exit(EXIT_FAILURE); }
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 	GLFWwindow* window = glfwCreateWindow(600, 600, "Chapter 2 - program 3", NULL, NULL);
+	if (!window) {
+		glfwTerminate();
+		exit(EXIT_FAILURE);
+	}
 	glfwMakeContextCurrent(window);
+	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) { exit(EXIT_FAILURE); }
+
+	// 检查实际支持的 OpenGL 版本
+	const GLubyte* version = glGetString(GL_VERSION);
+	std::cout << "Supported OpenGL version: " << version << std::endl;
+
+	// 检查 GLSL 版本支持
+	const GLubyte* glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+	std::cout << "Supported GLSL version: " << glslVersion << std::endl;
+
+
 	glfwSwapInterval(1);
 
 	init(window);
