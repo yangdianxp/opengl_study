@@ -4,7 +4,12 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 using namespace std;
+
+extern "C" {
+	__declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
+}
 
 #define numVAOs 1
 
@@ -12,11 +17,13 @@ GLuint renderingProgram;
 GLuint vao[numVAOs];
 
 string readFile(const char *filePath) {
+	std::filesystem::path cwd = std::filesystem::current_path();
+	std::cout << "当前工作目录: " << cwd << std::endl;
+
 	string content;
 	ifstream fileStream(filePath, ios::in);
 	string line = "";
-	while (!fileStream.eof()) {
-		getline(fileStream, line);
+	while (getline(fileStream, line)) {
 		content.append(line + "\n");
 	}
 	fileStream.close();
@@ -49,6 +56,12 @@ void init(GLFWwindow* window) {
 	renderingProgram = createShaderProgram();
 	glGenVertexArrays(numVAOs, vao);
 	glBindVertexArray(vao[0]);
+
+	// 在init函数中添加：
+	const GLubyte* renderer = glGetString(GL_RENDERER);
+	const GLubyte* vendor = glGetString(GL_VENDOR);
+	std::cout << "Renderer: " << renderer << std::endl;
+	std::cout << "Vendor: " << vendor << std::endl;
 }
 
 void display(GLFWwindow* window, double currentTime) {
@@ -63,6 +76,7 @@ int main(void) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	GLFWwindow* window = glfwCreateWindow(600, 600, "Chapter 2 - program 4", NULL, NULL);
 	glfwMakeContextCurrent(window);
+	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) { exit(EXIT_FAILURE); }
 	glfwSwapInterval(1);
 

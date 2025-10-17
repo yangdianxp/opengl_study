@@ -3,6 +3,10 @@
 #include <iostream>
 using namespace std;
 
+extern "C" {
+	__declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
+}
+
 #define numVAOs 1
 
 GLuint renderingProgram;
@@ -51,12 +55,12 @@ GLuint createShaderProgram() {
 	GLint linked;
 
 	const char *vshaderSource =
-		"#version 460    \n"
+		"#version 430    \n"
 		"void main(void) \n"
 		"{ gl_Position = vec4(0.0, 0.0, 0.0, 1.0); }";
 
 	const char *fshaderSource =
-		"#version 460    \n"
+		"#version 430    \n"
 		"out vec4 color; \n"
 		"void main(void) \n"
 		"{ color = vec4(0.0, 0.0, 1.0, 1.0); }";
@@ -104,7 +108,7 @@ GLuint createShaderProgram() {
 		printProgramLog(vfprogram);
 	}
 
-	// ÇåÀí×ÅÉ«Æ÷¶ÔÏó
+	// æ¸…ç†ç€è‰²å™¨å¯¹è±¡
 	glDeleteShader(vShader);
 	glDeleteShader(fShader);
 
@@ -127,7 +131,7 @@ void display(GLFWwindow* window, double currentTime) {
 int main(void) {
 	if (!glfwInit()) { exit(EXIT_FAILURE); }
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window = glfwCreateWindow(600, 600, "Chapter 2 - program 3", NULL, NULL);
@@ -139,11 +143,11 @@ int main(void) {
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) { exit(EXIT_FAILURE); }
 
-	// ¼ì²éÊµ¼ÊÖ§³ÖµÄ OpenGL °æ±¾
+	// æ£€æŸ¥å®é™…æ”¯æŒçš„ OpenGL ç‰ˆæœ¬
 	const GLubyte* version = glGetString(GL_VERSION);
 	std::cout << "Supported OpenGL version: " << version << std::endl;
 
-	// ¼ì²é GLSL °æ±¾Ö§³Ö
+	// æ£€æŸ¥ GLSL ç‰ˆæœ¬æ”¯æŒ
 	const GLubyte* glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
 	std::cout << "Supported GLSL version: " << glslVersion << std::endl;
 
