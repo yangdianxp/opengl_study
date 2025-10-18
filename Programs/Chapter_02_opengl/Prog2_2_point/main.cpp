@@ -48,9 +48,22 @@ void init(GLFWwindow* window) {
 	glBindVertexArray(vao[0]);
 }
 
+void setPointSize() {
+	static GLfloat pointSize = 30.0f;
+	static GLfloat sizeIncrement = 2.0f;
+	if (pointSize >= 200.0f) sizeIncrement = -1.0f;
+	if (pointSize <= 20.0f) sizeIncrement = 1.0f;
+	pointSize += sizeIncrement;
+	glPointSize(pointSize);
+}
+
 void display(GLFWwindow* window, double currentTime) {
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);  // clear the background to black, each time
+
 	glUseProgram(renderingProgram);
-	glPointSize(30.0f);
+	setPointSize();
 	glDrawArrays(GL_POINTS, 0, 1);
 }
 

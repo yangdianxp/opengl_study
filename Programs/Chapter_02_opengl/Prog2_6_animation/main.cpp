@@ -25,7 +25,11 @@ void init(GLFWwindow* window) {
 	glBindVertexArray(vao[0]);
 }
 
-void display(GLFWwindow* window, double currentTime) {
+bool display(GLFWwindow* window, double currentTime) {
+	static double lastTime = 0.0f;
+	if (currentTime - lastTime < 0.016) return false; // cap framerate to ~60fps
+	lastTime = currentTime;
+
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);  // clear the background to black, each time
@@ -38,6 +42,8 @@ void display(GLFWwindow* window, double currentTime) {
 	offsetLoc = glGetUniformLocation(renderingProgram, "offset"); // get ptr to "offset"
 	glProgramUniform1f(renderingProgram, offsetLoc, x);  // send value in "x" to "offset"
 	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	return true;
 }
 
 int main(void) {
@@ -53,8 +59,10 @@ int main(void) {
 	init(window);
 
 	while (!glfwWindowShouldClose(window)) {
-		display(window, glfwGetTime());
-		glfwSwapBuffers(window);
+		bool ret = display(window, glfwGetTime());
+		if (ret) {
+			glfwSwapBuffers(window);
+		}
 		glfwPollEvents();
 	}
 
