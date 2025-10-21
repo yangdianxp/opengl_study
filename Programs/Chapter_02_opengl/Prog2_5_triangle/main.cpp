@@ -15,6 +15,10 @@ extern "C" {
 GLuint renderingProgram;
 GLuint vao[numVAOs];
 
+GLuint angle = 0;
+GLuint inc = 1;
+GLuint angleLoc;
+
 void printShaderLog(GLuint shader) {
 	int len = 0;
 	int chWrittn = 0;
@@ -114,17 +118,31 @@ void init(GLFWwindow* window) {
 	glBindVertexArray(vao[0]);
 }
 
-void display(GLFWwindow* window, double currentTime) {
+bool display(GLFWwindow* window, double currentTime) {
+	static double lastTime = 0.0f;
+	if (currentTime - lastTime < 0.016) return false; // cap framerate to ~60fps
+	lastTime = currentTime;
+
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);  // clear the background to black, each time
+
+	angle += inc; 
+	angle %= 360;
+
 	glUseProgram(renderingProgram);
-	glPointSize(30.0f);
+	angleLoc = glGetUniformLocation(renderingProgram, "angle");
+	glProgramUniform1f(renderingProgram, angleLoc, (GLfloat)angle);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	return true;
 }
 
 int main(void) {
 	if (!glfwInit()) { exit(EXIT_FAILURE); }
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	GLFWwindow* window = glfwCreateWindow(400, 200, "Chapter 2 - program 5", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(400, 400, "Chapter 2 - program 5", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) { exit(EXIT_FAILURE); }
@@ -133,8 +151,10 @@ int main(void) {
 	init(window);
 
 	while (!glfwWindowShouldClose(window)) {
-		display(window, glfwGetTime());
-		glfwSwapBuffers(window);
+		bool ret = display(window, glfwGetTime());
+		if (ret) {
+			glfwSwapBuffers(window);
+		}
 		glfwPollEvents();
 	}
 
