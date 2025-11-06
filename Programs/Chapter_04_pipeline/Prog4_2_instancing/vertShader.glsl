@@ -15,13 +15,13 @@ mat4 buildTranslate(float x, float y, float z);
 
 void main(void)
 {	float i = gl_InstanceID + tf;
-//	float a = sin(203.0 * i/8000.0) * 403.0;	//when 100000 instances
-//	float b = cos(301.0 * i/4001.0) * 401.0;
-//	float c = sin(400.0 * i/6003.0) * 405.0;
+	float a = sin(203.0 * i/8000.0) * 403.0;	//when 100000 instances
+	float b = cos(301.0 * i/4001.0) * 401.0;
+	float c = sin(400.0 * i/6003.0) * 405.0;
 	
-	float a = sin(.35 * i) * 8.0;				// when 24 instances
-	float b = cos(.52 * i) * 8.0;
-	float c = sin(.70 * i) * 8.0;
+	// float a = sin(.35 * i) * 8.0;				// when 24 instances
+	// float b = cos(.52 * i) * 8.0;
+	// float c = sin(.70 * i) * 8.0;
 	
 	mat4 localRotX = buildRotateX(1.75*i);
 	mat4 localRotY = buildRotateY(1.75*i);

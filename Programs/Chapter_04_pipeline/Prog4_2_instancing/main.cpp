@@ -10,6 +10,10 @@
 #include "Utils.h"
 using namespace std;
 
+extern "C" {
+	__declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
+}
+
 #define numVAOs 1
 #define numVBOs 1
 
@@ -56,7 +60,8 @@ void init(GLFWwindow* window) {
 	aspect = (float)width / (float)height;
 	pMat = glm::perspective(1.0472f, aspect, 0.1f, 1000.0f);
 
-	cameraX = 0.0f; cameraY = 0.0f; cameraZ = 32.0f; // Z=32.0f when 24 instances, 420.0f when 100000 instances
+	// cameraX = 0.0f; cameraY = 0.0f; cameraZ = 32.0f; // Z=32.0f when 24 instances, 420.0f when 100000 instances
+	cameraX = 0.0f; cameraY = 0.0f; cameraZ = 420.0f;
 	setupVertices();
 }
 
@@ -86,7 +91,8 @@ void display(GLFWwindow* window, double currentTime) {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 
-	glDrawArraysInstanced(GL_TRIANGLES, 0, 36, 24);	// 0, 36, 24  (or 100000)
+	// glDrawArraysInstanced(GL_TRIANGLES, 0, 36, 24);	// 0, 36, 24  (or 100000)
+	glDrawArraysInstanced(GL_TRIANGLES, 0, 36, 100000);
 }
 
 void window_size_callback(GLFWwindow* win, int newWidth, int newHeight) {
@@ -101,6 +107,7 @@ int main(void) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	GLFWwindow* window = glfwCreateWindow(600, 600, "Chapter 4 - program 2", NULL, NULL);
 	glfwMakeContextCurrent(window);
+	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) { exit(EXIT_FAILURE); }
 	glfwSwapInterval(1);
 
