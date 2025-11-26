@@ -104,6 +104,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\yangd\.nuget\packages\soil2\1.31.0\build\native\include\SOIL2;D:\Users\yangd\AppData\Local\glew-2.1.0-win32\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,9 +129,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\fragShader.glsl" />
+    <None Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\vertShader.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Programs\Chapter_02_opengl\Prog2_2_point\main.cpp" />
+    <Image Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\brick1.jpg" />
+    <Image Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\brick1upArrow.jpg" />
+    <Image Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\ice.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\main.cpp" />
+    <ClCompile Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\Utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

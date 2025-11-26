@@ -11,6 +11,10 @@
 #include "Utils.h"
 using namespace std;
 
+extern "C" {
+	__declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
+}
+
 #define numVAOs 1
 #define numVBOs 2
 
@@ -66,7 +70,7 @@ void init(GLFWwindow* window) {
 	aspect = (float)width / (float)height;
 	pMat = glm::perspective(1.0472f, aspect, 0.1f, 1000.0f);
 
-	brickTexture = Utils::loadTexture("brick1.jpg");
+	brickTexture = Utils::loadTexture("ice.jpg");
 	// SEE Utils.cpp, the "loadTexture()" function, the code before the mipmapping section
 }
 
@@ -122,6 +126,7 @@ int main(void) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	GLFWwindow* window = glfwCreateWindow(600, 600, "Chapter 5 - program 1", NULL, NULL);
 	glfwMakeContextCurrent(window);
+	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) { exit(EXIT_FAILURE); }
 	glfwSwapInterval(1);
 

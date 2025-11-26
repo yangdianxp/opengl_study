@@ -16,10 +16,35 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\fragShader.glsl">
+      <Filter>源文件</Filter>
+    </None>
+    <None Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\vertShader.glsl">
+      <Filter>源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Programs\Chapter_02_opengl\Prog2_2_point\main.cpp">
+    <Image Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\brick1.jpg">
+      <Filter>源文件</Filter>
+    </Image>
+    <Image Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\brick1upArrow.jpg">
+      <Filter>源文件</Filter>
+    </Image>
+    <Image Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\ice.jpg">
+      <Filter>源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\Utils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Programs\Chapter_05_textures\Prog5_1_texturedPyramid\Utils.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
